@@ -14,7 +14,7 @@ export function activate(context: vscode.ExtensionContext) {
     // Initialize components
     moodManager = new MoodManager(context);
     quotesProvider = new QuotesProvider();
-    ambientScene = new AmbientScene(context.extensionPath);
+    ambientScene = new AmbientScene();
 
     // Register commands with proper error handling
     const toggleMoodCommand = vscode.commands.registerCommand('code-mood.toggleMood', async () => {
