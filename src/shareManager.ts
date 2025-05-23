@@ -9,7 +9,7 @@ interface MoodState {
 
 export class ShareManager {
     private panel: vscode.WebviewPanel | undefined;
-    private readonly MARKETPLACE_URL = 'https://marketplace.visualstudio.com/items?itemName=sagarregmi2056.mood-coding';
+    private readonly MARKETPLACE_URL = 'https://marketplace.visualstudio.com/items?itemName=sagarregmi.mood-coding';
     private readonly GITHUB_URL = 'https://github.com/sagarregmi2056/Mood-Coding';
 
     constructor() {}

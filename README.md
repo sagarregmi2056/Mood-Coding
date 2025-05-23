@@ -1,10 +1,22 @@
 # Mood Coding 🎯
 
+<p align="center">
+  <img src="images/icon.jpg" width="128" height="128" alt="Mood Coding Logo">
+</p>
+
 Enhance your coding experience with ambient scenes and mood-based themes! Mood Coding helps you stay mindful and productive while coding by adapting your VS Code environment to your current mood.
 
 [![Version](https://img.shields.io/visual-studio-marketplace/v/sagarregmi.mood-coding)](https://marketplace.visualstudio.com/items?itemName=sagarregmi.mood-coding)
 [![Downloads](https://img.shields.io/visual-studio-marketplace/d/sagarregmi.mood-coding)](https://marketplace.visualstudio.com/items?itemName=sagarregmi.mood-coding)
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/sagarregmi.mood-coding)](https://marketplace.visualstudio.com/items?itemName=sagarregmi.mood-coding)
+
+## Quick Install
+
+```
+ext install sagarregmi.mood-coding
+```
+
+Or install directly from: [VS Code Marketplace - Mood Coding](https://marketplace.visualstudio.com/items?itemName=sagarregmi.mood-coding)
 
 ## Features
 
@@ -19,13 +31,6 @@ Enhance your coding experience with ambient scenes and mood-based themes! Mood C
   - Calm 🧘
   - Creative 🎨
   - Productive 🚀
-
-## Installation
-
-1. Open VS Code
-2. Go to Extensions (Ctrl+Shift+X)
-3. Search for "Mood Coding"
-4. Click Install
 
 ## Usage
 

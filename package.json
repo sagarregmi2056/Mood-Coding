@@ -2,10 +2,11 @@
     "name": "mood-coding",
     "displayName": "Mood Coding",
     "description": "Enhance your coding experience with ambient scenes and mood-based themes",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "publisher": "sagarregmi",
     "private": false,
     "license": "MIT",
+    "icon": "images/icon.jpg",
     "repository": {
         "type": "git",
         "url": "https://github.com/sagarregmi2056/Mood-Coding"
