@@ -9,7 +9,7 @@ export class QuotesProvider {
     private cachedQuotes: Quote[] = [];
     private readonly CACHE_SIZE = 10;
     private readonly API_URL = 'https://api.quotable.io';
-    private quotePanel: vscode.WebviewPanel | undefined;
+    private currentQuote: string = '';
     
     // Fallback quotes when offline
     private readonly fallbackQuotes: Quote[] = [
@@ -54,6 +54,8 @@ export class QuotesProvider {
         this.refreshQuoteCache().catch(() => {
             console.log('Using fallback quotes due to network issues');
         });
+        // Initialize with a random quote
+        this.currentQuote = this.getRandomQuote();
     }
 
     private async refreshQuoteCache(): Promise<void> {
@@ -83,7 +85,7 @@ export class QuotesProvider {
         }
     }
 
-    public async showRandomQuote() {
+    public async showRandomQuote(): Promise<void> {
         try {
             // If cache is running low and we're not using fallback quotes, try to refresh
             if (this.cachedQuotes.length < 3 && this.cachedQuotes !== this.fallbackQuotes) {
@@ -95,101 +97,29 @@ export class QuotesProvider {
             // Get a random quote
             const randomIndex = Math.floor(Math.random() * this.cachedQuotes.length);
             const quote = this.cachedQuotes[randomIndex];
-
-            // Create and show webview panel
-            this.quotePanel = vscode.window.createWebviewPanel(
-                'codeMoodQuote',
-                'Code Mood - Daily Quote',
-                vscode.ViewColumn.Two,
-                {
-                    enableScripts: true,
-                    retainContextWhenHidden: false
-                }
-            );
-
-            // Set the content
-            this.quotePanel.webview.html = this.getQuoteWebviewContent(quote);
-
-            // Auto-close after 5 seconds
-            setTimeout(() => {
-                if (this.quotePanel) {
-                    this.quotePanel.dispose();
-                }
-            }, 5000);
-
-            // Clean up
-            this.quotePanel.onDidDispose(() => {
-                this.quotePanel = undefined;
-            });
-
+            this.currentQuote = `"${quote.content}" - ${quote.author}`;
+            
+            // Show the quote
+            await vscode.window.showInformationMessage(this.currentQuote);
         } catch (error) {
             console.error('Error showing quote:', error);
             // Ensure we always show something
             const fallbackQuote = this.fallbackQuotes[
                 Math.floor(Math.random() * this.fallbackQuotes.length)
             ];
-            
-            vscode.window.showInformationMessage(
-                `"${fallbackQuote.content}" - ${fallbackQuote.author}`
-            );
+            this.currentQuote = `"${fallbackQuote.content}" - ${fallbackQuote.author}`;
+            await vscode.window.showInformationMessage(this.currentQuote);
         }
     }
 
-    private getQuoteWebviewContent(quote: Quote): string {
-        return `<!DOCTYPE html>
-        <html>
-        <head>
-            <style>
-                body {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    height: 100vh;
-                    margin: 0;
-                    padding: 20px;
-                    font-family: Arial, sans-serif;
-                    text-align: center;
-                    background-color: var(--vscode-editor-background);
-                    color: var(--vscode-editor-foreground);
-                }
-                .quote {
-                    font-size: 24px;
-                    margin-bottom: 20px;
-                    line-height: 1.4;
-                    max-width: 800px;
-                }
-                .author {
-                    font-size: 18px;
-                    color: var(--vscode-textLink-foreground);
-                }
-                .timer {
-                    position: absolute;
-                    top: 20px;
-                    right: 20px;
-                    font-size: 14px;
-                    color: var(--vscode-descriptionForeground);
-                }
-            </style>
-        </head>
-        <body>
-            <div class="timer">Closing in <span id="countdown">5</span>s</div>
-            <div class="quote">"${quote.content}"</div>
-            <div class="author">- ${quote.author}</div>
-            <script>
-                let timeLeft = 5;
-                const countdownElement = document.getElementById('countdown');
-                
-                const timer = setInterval(() => {
-                    timeLeft--;
-                    countdownElement.textContent = timeLeft;
-                    if (timeLeft <= 0) {
-                        clearInterval(timer);
-                    }
-                }, 1000);
-            </script>
-        </body>
-        </html>`;
+    public getCurrentQuote(): string {
+        return this.currentQuote || this.getRandomQuote();
+    }
+
+    private getRandomQuote(): string {
+        const randomIndex = Math.floor(Math.random() * this.fallbackQuotes.length);
+        const quote = this.fallbackQuotes[randomIndex];
+        return `"${quote.content}" - ${quote.author}`;
     }
 
     public addQuote(content: string, author: string = "Unknown") {

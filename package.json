@@ -1,14 +1,14 @@
 {
-    "name": "code-mood",
-    "displayName": "Code Mood",
+    "name": "mood-coding",
+    "displayName": "Mood Coding",
     "description": "Enhance your coding experience with ambient scenes and mood-based themes",
-    "version": "0.0.1",
-    "publisher": "vscode-samples",
-    "private": true,
+    "version": "0.1.0",
+    "publisher": "sagarregmi2056",
+    "private": false,
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/Microsoft/vscode-extension-samples"
+        "url": "https://github.com/sagarregmi2056/Mood-Coding"
     },
     "engines": {
         "vscode": "^1.85.0"
@@ -33,6 +33,26 @@
             {
                 "command": "code-mood.toggleAmbient",
                 "title": "Code Mood: Toggle Ambient Scene"
+            },
+            {
+                "command": "moodCoding.shareMood",
+                "title": "Mood: Share My Current Mood"
+            },
+            {
+                "command": "moodCoding.startBreakReminder",
+                "title": "Mood: Start Break Reminders"
+            },
+            {
+                "command": "moodCoding.stopBreakReminder",
+                "title": "Mood: Stop Break Reminders"
+            },
+            {
+                "command": "moodCoding.showOnboarding",
+                "title": "Mood: Show Welcome Guide"
+            },
+            {
+                "command": "moodCoding.createGitHubIssue",
+                "title": "Mood: Submit Feedback"
             }
         ],
         "keybindings": [
@@ -59,7 +79,12 @@
         "watch": "tsc -watch -p ./",
         "pretest": "npm run compile && npm run lint",
         "lint": "eslint src --ext ts",
-        "test": "node ./out/test/runTest.js"
+        "test": "node ./out/test/runTest.js",
+        "package": "vsce package",
+        "publish": "vsce publish",
+        "patch": "npm version patch && vsce publish",
+        "minor": "npm version minor && vsce publish",
+        "major": "npm version major && vsce publish"
     },
     "devDependencies": {
         "@types/vscode": "^1.85.0",
@@ -74,5 +99,7 @@
         "typescript": "^5.3.3",
         "@vscode/test-electron": "^2.3.8"
     },
-    "dependencies": {}
+    "dependencies": {
+        "html2canvas": "^1.4.1"
+    }
 }
