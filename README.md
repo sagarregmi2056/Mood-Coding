@@ -1,57 +1,83 @@
 # Mood Coding 🎯
 
-[![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/sagarregmi2056.mood-coding?color=blue&label=VS%20Code%20Marketplace&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=sagarregmi2056.mood-coding)
-[![Installs](https://img.shields.io/visual-studio-marketplace/i/sagarregmi2056.mood-coding?color=success)](https://marketplace.visualstudio.com/items?itemName=sagarregmi2056.mood-coding)
-[![Rating](https://img.shields.io/visual-studio-marketplace/r/sagarregmi2056.mood-coding?color=yellow)](https://marketplace.visualstudio.com/items?itemName=sagarregmi2056.mood-coding)
-[![Made with VS Code](https://img.shields.io/badge/Made%20with-VS%20Code-blue?logo=visual-studio-code)](https://code.visualstudio.com)
-[![Powered by Mood Coding](https://img.shields.io/badge/Powered%20by-Mood%20Coding%20🎯-blueviolet)](https://github.com/sagarregmi2056/Mood-Coding)
+Enhance your coding experience with ambient scenes and mood-based themes! Mood Coding helps you stay mindful and productive while coding by adapting your VS Code environment to your current mood.
 
-> Enhance your coding experience with mood-based themes, ambient sounds, and mindful breaks.
+[![Version](https://img.shields.io/visual-studio-marketplace/v/sagarregmi.mood-coding)](https://marketplace.visualstudio.com/items?itemName=sagarregmi.mood-coding)
+[![Downloads](https://img.shields.io/visual-studio-marketplace/d/sagarregmi.mood-coding)](https://marketplace.visualstudio.com/items?itemName=sagarregmi.mood-coding)
+[![Rating](https://img.shields.io/visual-studio-marketplace/r/sagarregmi.mood-coding)](https://marketplace.visualstudio.com/items?itemName=sagarregmi.mood-coding)
 
-## Features ✨
+## Features
 
-- 🎨 **Mood-based Themes**: Customize your editor based on your current mood
-- 🎵 **Ambient Sounds**: Focus-enhancing background music
-- 💭 **Inspirational Quotes**: Get motivated with programming wisdom
-- 🖼️ **Share Your Mood**: Create and share beautiful mood screenshots
-- 🧘 **Break Reminders**: Stay mindful with animated breathing exercises
-- 📢 **Easy Feedback**: Submit suggestions and report issues directly
+- 🎨 **Mood-Based Themes**: Switch between different color themes based on your current mood
+- 🎵 **Ambient Scenes**: Play calming background sounds to enhance focus
+- 💭 **Inspirational Quotes**: Get motivated with coding-related quotes
+- ⏰ **Break Reminders**: Stay healthy with customizable break reminders
+- 📱 **Social Sharing**: Share your coding mood with your network
+- 🌈 **Multiple Moods**: Choose from various moods:
+  - Focused 🎯
+  - Energetic ⚡
+  - Calm 🧘
+  - Creative 🎨
+  - Productive 🚀
 
-## Installation 🚀
+## Installation
 
 1. Open VS Code
-2. Press `Ctrl/Cmd + P`
-3. Type `ext install sagarregmi2056.mood-coding`
+2. Go to Extensions (Ctrl+Shift+X)
+3. Search for "Mood Coding"
+4. Click Install
 
-## Usage 🎮
+## Usage
 
-1. Press `Ctrl/Cmd + Shift + P` to open the command palette
-2. Type "Mood" to see all available commands
-3. Choose your mood and enjoy the experience!
+### Basic Commands
 
-## Share Your Mood 🌟
+- `Ctrl+Alt+M` (Mac: `Cmd+Alt+M`): Toggle Mood
+- `Ctrl+Alt+Q` (Mac: `Cmd+Alt+Q`): Show Inspirational Quote
+- `Ctrl+Alt+A` (Mac: `Cmd+Alt+A`): Toggle Ambient Scene
 
-Add this badge to your GitHub profile or project README to show you're using Mood Coding:
+### Command Palette
 
-```markdown
-[![Powered by Mood Coding](https://img.shields.io/badge/Powered%20by-Mood%20Coding%20🎯-blueviolet)](https://github.com/sagarregmi2056/Mood-Coding)
-```
+Access all features through the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`):
 
-## Contributing 🤝
+- `Mood: Toggle Mood` - Switch between different moods
+- `Mood: Show Inspirational Quote` - Display a coding quote
+- `Mood: Toggle Ambient Scene` - Play/pause ambient sounds
+- `Mood: Share My Current Mood` - Share your mood on social media
+- `Mood: Start Break Reminders` - Enable break notifications
+- `Mood: Stop Break Reminders` - Disable break notifications
+- `Mood: Show Welcome Guide` - View the onboarding guide
+- `Mood: Submit Feedback` - Create a GitHub issue
 
-We welcome contributions! Feel free to:
+## Sharing Your Mood
 
-1. Submit feature requests
-2. Report bugs
-3. Create pull requests
-4. Share your experience
+Share your current coding mood and inspirational quote on:
+- Twitter
+- LinkedIn
+- Facebook
+- GitHub Gists
 
-Use the "Mood: Submit Feedback" command in VS Code to create issues directly.
+## Customization
 
-## License 📄
+Mood Coding adapts to your VS Code theme and settings. Each mood comes with:
+- Custom color gradients
+- Matching ambient sounds
+- Curated quotes
+- Appropriate break intervals
 
-MIT © [Sagar Regmi]
+## Contributing
+
+Found a bug or have a feature request? Please open an issue on our [GitHub repository](https://github.com/sagarregmi2056/Mood-Coding).
+
+## License
+
+This extension is licensed under the [MIT License](LICENSE).
+
+## Support
+
+Need help? Have questions?
+- Submit an issue on [GitHub](https://github.com/sagarregmi2056/Mood-Coding/issues)
+- Contact the developer at sagarregmi2056@gmail.com
 
 ---
 
-<p align="center">Made with ❤️ and Mood Coding 🎯</p> 
+**Happy Coding with the Right Mood! 🎯✨** 
