@@ -3,6 +3,8 @@ import * as vscode from 'vscode';
 interface Track {
     name: string;
     url: string;
+    type: 'local' | 'jamendo';
+    id?: string;
 }
 
 interface Scene {
@@ -17,24 +19,48 @@ export class AmbientScene {
         {
             name: "Aquarium",
             tracks: [
-                { name: "Ocean Waves", url: "https://www.soundjay.com/nature/ocean-wave-1.mp3" },
-                { name: "Underwater Ambience", url: "https://www.soundjay.com/nature/underwater-bubbles-1.mp3" }
+                { 
+                    name: "Ocean Waves", 
+                    url: "https://www.soundjay.com/nature/ocean-wave-1.mp3",
+                    type: 'local'
+                },
+                { 
+                    name: "Nature Sounds", 
+                    url: "https://www.soundjay.com/nature/sounds/rain-02.mp3",
+                    type: 'local'
+                }
             ],
             backgroundColor: "rgba(35, 92, 140, 0.3)"
         },
         {
             name: "Space",
             tracks: [
-                { name: "Space Ambient", url: "https://www.soundjay.com/ambient/ambient-1.mp3" },
-                { name: "Cosmic Waves", url: "https://www.soundjay.com/ambient/ambient-2.mp3" }
+                { 
+                    name: "Space Ambient", 
+                    url: "https://www.soundjay.com/ambient/ambient-1.mp3",
+                    type: 'local'
+                },
+                { 
+                    name: "Cosmic Waves", 
+                    url: "https://www.soundjay.com/ambient/ambient-2.mp3",
+                    type: 'local'
+                }
             ],
             backgroundColor: "rgba(13, 15, 44, 0.3)"
         },
         {
             name: "Solar System",
             tracks: [
-                { name: "Planetary Motion", url: "https://www.soundjay.com/ambient/ambient-3.mp3" },
-                { name: "Solar Winds", url: "https://www.soundjay.com/ambient/ambient-4.mp3" }
+                { 
+                    name: "Planetary Motion", 
+                    url: "https://www.soundjay.com/ambient/ambient-3.mp3",
+                    type: 'local'
+                },
+                { 
+                    name: "Solar Winds", 
+                    url: "https://www.soundjay.com/ambient/ambient-4.mp3",
+                    type: 'local'
+                }
             ],
             backgroundColor: "rgba(25, 29, 71, 0.3)"
         }
@@ -92,17 +118,49 @@ export class AmbientScene {
                     z-index: 1;
                 }
                 .controls {
-                    position: relative;
+                    position: fixed;
+                    left: 20px;
+                    top: 20px;
                     z-index: 2;
                     display: flex;
                     flex-direction: column;
                     gap: 15px;
-                    margin: 20px 0;
                     background: rgba(0, 0, 0, 0.7);
                     padding: 20px;
                     border-radius: 12px;
                     backdrop-filter: blur(10px);
                     min-width: 300px;
+                    transition: transform 0.3s ease;
+                }
+                .controls.hidden {
+                    transform: translateX(-100%);
+                }
+                .controls.hidden #collapseButton {
+                    transform: translateX(100%);
+                    position: fixed;
+                    left: 20px;
+                    top: 20px;
+                }
+                #collapseButton {
+                    align-self: flex-end;
+                    background: #0e639c;
+                    color: white;
+                    border: none;
+                    border-radius: 4px;
+                    padding: 8px 16px;
+                    cursor: pointer;
+                    font-size: 12px;
+                    margin-bottom: 10px;
+                    transition: transform 0.3s ease;
+                    z-index: 3;
+                }
+                #collapseButton:hover {
+                    background: #1177bb;
+                }
+                .controls-content {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 15px;
                 }
                 select, button {
                     padding: 12px 20px;
@@ -154,40 +212,80 @@ export class AmbientScene {
                     text-align: center;
                     margin-top: 10px;
                 }
+                .music-list {
+                    max-height: 200px;
+                    overflow-y: auto;
+                    background: rgba(0, 0, 0, 0.3);
+                    border-radius: 4px;
+                    padding: 8px;
+                    margin-top: 10px;
+                }
+                .music-item {
+                    display: flex;
+                    align-items: center;
+                    padding: 8px;
+                    cursor: pointer;
+                    border-radius: 4px;
+                    margin-bottom: 4px;
+                }
+                .music-item:hover {
+                    background: rgba(255, 255, 255, 0.1);
+                }
+                .music-item.playing {
+                    background: rgba(14, 99, 156, 0.3);
+                }
+                #searchInput {
+                    width: 100%;
+                    padding: 8px;
+                    background: rgba(0, 0, 0, 0.3);
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    color: white;
+                    border-radius: 4px;
+                }
+                #searchInput::placeholder {
+                    color: rgba(255, 255, 255, 0.5);
+                }
             </style>
         </head>
         <body>
-            <div class="controls">
-                <div class="slider-container">
-                    <label>Scene Selection</label>
-                    <select id="sceneSelect" onchange="changeScene()">
-                        ${this.scenes.map((scene, index) => 
-                            `<option value="${index}">${scene.name}</option>`
-                        ).join('')}
-                    </select>
-                </div>
-                
-                <div class="slider-container">
-                    <label>Audio Track</label>
-                    <select id="trackSelect" onchange="changeTrack()">
-                        ${this.scenes[0].tracks.map((track, index) => 
-                            `<option value="${index}">${track.name}</option>`
-                        ).join('')}
-                    </select>
-                </div>
+            <div class="controls" id="controls">
+                <button id="collapseButton" onclick="toggleControls()">Collapse</button>
+                <div class="controls-content">
+                    <div class="slider-container">
+                        <label>Scene Selection</label>
+                        <select id="sceneSelect" onchange="changeScene()">
+                            ${this.scenes.map((scene, index) => 
+                                `<option value="${index}">${scene.name}</option>`
+                            ).join('')}
+                        </select>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label>Audio Track</label>
+                        <select id="trackSelect" onchange="changeTrack()">
+                            ${this.scenes[0].tracks.map((track, index) => 
+                                `<option value="${index}">${track.name}</option>`
+                            ).join('')}
+                        </select>
+                        <div style="margin-top: 10px;">
+                            <input type="text" id="searchInput" placeholder="Search more meditation music..." onkeyup="searchMusic(event)">
+                            <div id="musicList" class="music-list"></div>
+                        </div>
+                    </div>
 
-                <div class="slider-container">
-                    <label>Volume</label>
-                    <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.5" onchange="updateVolume()">
-                </div>
+                    <div class="slider-container">
+                        <label>Volume</label>
+                        <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.5" onchange="updateVolume()">
+                    </div>
 
-                <div class="slider-container">
-                    <label>Background Opacity</label>
-                    <input type="range" id="opacitySlider" min="0.1" max="1" step="0.1" value="0.7" onchange="updateOpacity()">
-                </div>
+                    <div class="slider-container">
+                        <label>Background Opacity</label>
+                        <input type="range" id="opacitySlider" min="0.1" max="1" step="0.1" value="0.7" onchange="updateOpacity()">
+                    </div>
 
-                <button onclick="toggleAudio()" id="audioButton" disabled>Loading...</button>
-                <div id="status" class="status">Initializing audio...</div>
+                    <button onclick="toggleAudio()" id="audioButton" disabled>Loading...</button>
+                    <div id="status" class="status">Initializing audio...</div>
+                </div>
             </div>
             <canvas id="canvas"></canvas>
             <audio id="ambientAudio" preload="auto">
@@ -198,23 +296,23 @@ export class AmbientScene {
                 const canvas = document.getElementById('canvas');
                 const ctx = canvas.getContext('2d');
                 const audio = document.getElementById('ambientAudio');
-                const audioButton = document.getElementById('audioButton');
                 const statusDiv = document.getElementById('status');
                 let isPlaying = false;
                 let currentScene = 0;
                 let animationObjects = [];
+                let currentlyPlaying = null;
 
                 // Audio setup and error handling
                 audio.addEventListener('canplaythrough', () => {
-                    audioButton.disabled = false;
-                    audioButton.textContent = 'Play Music';
                     statusDiv.textContent = 'Ready to play';
                 });
 
                 audio.addEventListener('error', (e) => {
                     console.error('Audio error:', e.target.error);
-                    statusDiv.textContent = 'Error loading audio. Please try another track.';
-                    audioButton.disabled = true;
+                    const tracks = ${JSON.stringify(this.scenes.map(s => s.tracks))};
+                    const currentTrack = tracks[currentScene][document.getElementById('trackSelect').value];
+                    statusDiv.textContent = \`Error loading \${currentTrack.name}. Please try another track.\`;
+                    audio.disabled = true;
                 });
 
                 audio.addEventListener('playing', () => {
@@ -507,7 +605,7 @@ export class AmbientScene {
                         
                         // Initialize new scene
                         initializeScene(currentScene);
-                        statusDiv.textContent = \`Switched to \${tracks[currentScene][0].name}\`;
+                        statusDiv.textContent = \`Switched to \${currentSceneTracks[0].name}\`;
                     } catch (error) {
                         console.error('Error changing scene:', error);
                         statusDiv.textContent = 'Error changing scene. Please try again.';
@@ -546,25 +644,43 @@ export class AmbientScene {
                     }
                 }
 
-                function toggleAudio() {
-                    try {
-                        if (isPlaying) {
-                            audio.pause();
-                            audioButton.textContent = 'Play Music';
-                        } else {
-                            const playPromise = audio.play();
-                            if (playPromise !== undefined) {
-                                playPromise.catch(e => {
-                                    console.error('Error playing audio:', e);
-                                    statusDiv.textContent = "Error playing audio. Please try again.";
-                                });
-                            }
-                            audioButton.textContent = 'Pause Music';
+                async function searchMusic(event) {
+                    if (event.key === 'Enter') {
+                        const query = document.getElementById('searchInput').value;
+                        const musicList = document.getElementById('musicList');
+                        statusDiv.textContent = 'Searching...';
+
+                        try {
+                            const response = await fetch(\`https://api.jamendo.com/v3.0/tracks/?client_id=1d50356f&format=json&limit=10&tags=meditation+ambient&search=\${encodeURIComponent(query)}\`);
+                            const data = await response.json();
+                            
+                            musicList.innerHTML = data.results.map(track => 
+                                \`<div class="music-item" onclick="playSearchTrack('\${track.audio}', '\${track.name.replace(/'/g, "\\'")}')">\${track.name}</div>\`
+                            ).join('');
+                            
+                            statusDiv.textContent = 'Ready to play';
+                        } catch (error) {
+                            console.error('Error searching music:', error);
+                            statusDiv.textContent = 'Error searching music. Try again.';
                         }
-                        isPlaying = !isPlaying;
-                    } catch (error) {
-                        console.error('Error toggling audio:', error);
-                        statusDiv.textContent = 'Error controlling playback. Please try again.';
+                    }
+                }
+
+                function playSearchTrack(url, name) {
+                    const wasPlaying = !audio.paused;
+                    audio.src = url;
+                    audio.load();
+                    
+                    const playPromise = audio.play();
+                    if (playPromise !== undefined) {
+                        playPromise.then(() => {
+                            statusDiv.textContent = \`Playing: \${name}\`;
+                            audioButton.textContent = 'Pause Music';
+                        }).catch(error => {
+                            console.error('Error playing audio:', error);
+                            statusDiv.textContent = 'Error playing track. Try another.';
+                            audioButton.textContent = 'Play Music';
+                        });
                     }
                 }
 
@@ -584,6 +700,19 @@ export class AmbientScene {
                     } catch (error) {
                         console.error('Error updating opacity:', error);
                         statusDiv.textContent = 'Error adjusting opacity.';
+                    }
+                }
+
+                // Add toggle controls function
+                function toggleControls() {
+                    const controls = document.getElementById('controls');
+                    const button = document.getElementById('collapseButton');
+                    if (controls.classList.contains('hidden')) {
+                        controls.classList.remove('hidden');
+                        button.textContent = 'Collapse';
+                    } else {
+                        controls.classList.add('hidden');
+                        button.textContent = 'Show';
                     }
                 }
 
